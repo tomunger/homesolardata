@@ -1,0 +1,17 @@
+{
+	"sqltools.connections": [
+		{
+			"mysqlOptions": {
+				"authProtocol": "default"
+			},
+			"previewLimit": 50,
+			"server": "lita.local",
+			"port": 3306,
+			"askForPassword": true,
+			"driver": "MariaDB",
+			"name": "Lita",
+			"username": "solarlogger",
+			"database": "enphasetest"
+		}
+	]
+}

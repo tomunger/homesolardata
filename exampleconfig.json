@@ -1,0 +1,16 @@
+{
+	"dbuser": "",
+	"dbpass": "",
+	"dbname": "solardata",
+	"dbtable": "production",
+	"dbhost": "",
+	"dbport": "3306",
+
+	"mailhost": "",
+	"mailport": "",
+	"mailfrom": "",
+	"mailto": "",
+	"mailsubjectprefix": "",
+	"mailuser": "",
+	"mailpass": ""
+}
