@@ -100,10 +100,13 @@ def getSDItem() -> sditem.SDItem:
 	item = None
 	try: 
 		# download json from URL
-		r = requests.get('http://envoy.local/ivp/meters/readings')
+		r = requests.get('http://envoy.local/ivp/meters/readings', timeout=10)
 
 		# parse json
 		rjson = r.json()
+	except requests.exceptions.Timeout:
+		logger.errror ("Timeout reading Enphase data")
+		# TODO:  Notify that enphase is unreadable.
 	except Exception as e:
 		logger.error ("Exception reading data: \n", str(e), exc_info=True)
 
@@ -112,7 +115,6 @@ def getSDItem() -> sditem.SDItem:
 		production = rjson[0]['activePower']
 		net = rjson[1]['activePower']
 		consumption = production + net
-
 		item = sditem.SDItem(datetime.datetime.now(), consumption, production)
 
 	return item
