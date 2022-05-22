@@ -1,10 +1,13 @@
 {
-	"dbuser": "",
-	"dbpass": "",
-	"dbname": "solardata",
-	"dbtable": "production",
-	"dbhost": "",
-	"dbport": "3306",
+	"enphase_host": "envoy.local",
+	"enphase_port": 80,
+
+	"solardb_user": "",
+	"solardb_pass": "",
+	"solardb_name": "solardata",
+	"solardb_table": "production",
+	"solardb_host": "",
+	"solardb_port": "3306",
 
 	"mailhost": "",
 	"mailport": "",

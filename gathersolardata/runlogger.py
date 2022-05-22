@@ -11,7 +11,7 @@ import queue
 
 import sdlogger
 import sditem
-import random
+import sdfetch
 
 '''
 Solar data logger.
@@ -90,38 +90,6 @@ class SDLoggerThread(object):
 
 
 
-def getSDItem() -> sditem.SDItem:
-	'''
-	Read a data item from the local envoy system
-	TODO:  Move this to a class that will interrogate the Enphase system and return correct values
-		for other installations.
-	'''
-	rjson = None
-	item = None
-	try: 
-		# download json from URL
-		r = requests.get('http://envoy.local/ivp/meters/readings', timeout=10)
-
-		# parse json
-		rjson = r.json()
-	except requests.exceptions.Timeout:
-		logger.errror ("Timeout reading Enphase data")
-		# TODO:  Notify that enphase is unreadable.
-	except Exception as e:
-		logger.error ("Exception reading data: \n", str(e), exc_info=True)
-
-
-	if rjson is not None:
-		production = rjson[0]['activePower']
-		net = rjson[1]['activePower']
-		consumption = production + net
-		item = sditem.SDItem(datetime.datetime.now(), consumption, production)
-
-	return item
-
-
-
-
 
 logger.info("----- STARTING -----")
 
@@ -130,12 +98,14 @@ logger.info("----- STARTING -----")
 # Create the solar logger
 #
 sdlogger = sdlogger.SDLogger("local_cache.csv", 
-				config['dbname'],
-				config['dbtable'],
-				config['dbuser'],
-				config['dbpass'], 
-				config['dbhost'], 
-				config['dbport'])
+				config['solardb_name'],
+				config['solardb_table'],
+				config['solardb_user'],
+				config['solardb_pass'], 
+				config['solardb_host'], 
+				config['solardb_port'])
+
+sdfetch = sdfetch.SDFetch(config.get('enphase_host', 'envoy.local'), config.get('enphase_port', 80))
 
 
 #
@@ -151,9 +121,10 @@ t.start()
 
 #
 # Main thread then loops forever
+#
 try:
 	while True:
-		item = getSDItem()
+		item = sdfetch.getSDItem()
 		if item is not None:
 			q.put_nowait(item)
 			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.consumption:.1f} - {item.production:.1f} -> {item.production - item.consumption:.1f}")

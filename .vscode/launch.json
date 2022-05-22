@@ -6,6 +6,14 @@
 	"configurations": [
 		
 		{
+			"name": "runlogger.py",
+			"type": "python",
+			"request": "launch",
+			"program": "gathersolardata/runlogger.py",
+			"console": "integratedTerminal",
+			"justMyCode": false
+		},
+		{
 			"name": "Python: Current File & library",
 			"type": "python",
 			"request": "launch",
