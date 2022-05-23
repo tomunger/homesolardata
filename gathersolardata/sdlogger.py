@@ -58,7 +58,7 @@ class SDLogger(object):
 		self.db_pass = db_pass
 		self.db_host = db_host
 		self.db_port = db_port
-
+		logger.info(f"Logging data to {db_host}:{db_port}, user {db_user}, {db_name}/{db_table}")
 
 
 	def run(self):

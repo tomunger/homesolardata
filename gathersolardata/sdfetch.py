@@ -33,7 +33,7 @@ class SDFetch(object):
 		try:
 			item = self._get_from_host(self.host, self.port)
 		except requests.exceptions.ConnectionError as e:
-			logger.info("Trying to fetch from by address")
+			logger.info("Trying to fetch from by address %s:%d", self.ip_address, self.port)
 			try:
 				item = self._get_from_host(self.ip_address, self.port)
 			except Exception as e:
@@ -44,8 +44,7 @@ class SDFetch(object):
 
 	def _reffetch_ipaddr(self):
 		if self.next_ip_fetch <= datetime.datetime.now():
-			self.ip_address = '192.168.11.101'
-			# self.ip_address = socket.gethostbyname(self.host)
+			self.ip_address = socket.gethostbyname(self.host)
 			self.next_ip_fetch = datetime.datetime.now() + self.ipaddr_refresh_interval
 
 
