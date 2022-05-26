@@ -44,8 +44,12 @@ class SDFetch(object):
 
 	def _reffetch_ipaddr(self):
 		if self.next_ip_fetch <= datetime.datetime.now():
-			self.ip_address = socket.gethostbyname(self.host)
-			self.next_ip_fetch = datetime.datetime.now() + self.ipaddr_refresh_interval
+			try:
+				self.ip_address = socket.gethostbyname(self.host)
+			except Exception:
+				pass
+			else:
+				self.next_ip_fetch = datetime.datetime.now() + self.ipaddr_refresh_interval
 
 
 
@@ -75,7 +79,7 @@ class SDFetch(object):
 			rjson = r.json()
 		except requests.exceptions.Timeout:
 			# This probably represents network issues that won't succeed with second try
-			logger.errror ("Timeout reading Enphase data from %s:%d", host, port)
+			logger.error ("Timeout reading Enphase data from %s:%d", host, port)
 		except requests.exceptions.ConnectionError:
 			# This, sometimes, represent problems looking up the hostname, and my succeed if done with an IP address.
 			logger.error ("Connection error reading Enphase data from %s:%d", host, port)
