@@ -58,6 +58,9 @@ class SDLogger(object):
 		self.db_pass = db_pass
 		self.db_host = db_host
 		self.db_port = db_port
+		self._report_time = datetime.datetime.now()
+		self._report_interval = datetime.timedelta(minutes=30)
+		self._sent_count = 0
 		logger.info(f"Logging data to {db_host}:{db_port}, user {db_user}, {db_name}/{db_table}")
 
 
@@ -110,6 +113,12 @@ class SDLogger(object):
 		# Saved un-sent data
 		#
 		self._cache_save(data)
+
+		# Report periodically
+		n = datetime.datetime.now()
+		if n > self._report_time:
+			logger.info("Transmitted %d items", self._sent_count)
+			self._report_time += self._report_interval
 
 					
 
@@ -185,7 +194,11 @@ class SDLogger(object):
 			except Exception as e:
 				logger.error("Failed to commit transaction: %s", e, exc_info=True)
 				data.transmitted_count = 0
-			logger.info("%d items transmitted", data.transmitted_count)
+			# Log at lower level when other than standard case of 1 item transmitted.
+			logger.log(logging.DEBUG if data.transmitted_count == 1 else logging.INFO,
+						"%d items transmitted", data.transmitted_count)
+
+			self._sent_count += data.transmitted_count
 
 
 
