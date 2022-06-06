@@ -127,7 +127,7 @@ try:
 		item = sdfetch.getSDItem()
 		if item is not None:
 			q.put_nowait(item)
-			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.consumption:.1f} - {item.production:.1f} -> {item.production - item.consumption:.1f}")
+			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.production:.1f} - {item.consumption:.1f} -> {item.production - item.consumption:.1f}")
 		else:
 			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: no data captured")
 		# TODO:  more precise sleep time so we are closer to every even 10 seconds.
