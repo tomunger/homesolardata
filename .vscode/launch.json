@@ -4,7 +4,7 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-		
+
 		{
 			"name": "runlogger.py",
 			"type": "python",
@@ -28,6 +28,21 @@
 			"program": "${file}",
 			"console": "integratedTerminal",
 			"justMyCode": true
+		},
+		{
+			"name": "Docker: gathersolar",
+			"type": "docker",
+			"request": "launch",
+			"preLaunchTask": "docker-run: debug",
+			"python": {
+				"pathMappings": [
+					{
+						"localRoot": "${workspaceFolder}/gathersolardata",
+						"remoteRoot": "/app"
+					}
+				],
+				"projectType": "general"
+			}
 		}
 	]
 }

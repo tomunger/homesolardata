@@ -118,7 +118,7 @@ class SDLogger(object):
 		n = datetime.datetime.now()
 		if n > self._report_time:
 			logger.info("Transmitted %d items", self._sent_count)
-			self._report_time += self._report_interval
+			self._report_time = n + self._report_interval
 
 					
 

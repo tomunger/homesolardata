@@ -13,5 +13,11 @@
 			"username": "solarlogger",
 			"database": "enphasetest"
 		}
-	]
+	],
+	"terminal.integrated.env.osx": {
+		"PYTHONPATH": "lib"
+	},	
+	"terminal.integrated.env.linux": {
+		"PYTHONPATH": "lib"
+	},
 }

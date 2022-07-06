@@ -4,14 +4,16 @@ import json
 import time
 import threading
 import sys
-import requests
 import datetime
 import queue
+import dotenv
+import os
 
 
 import sdlogger
 import sditem
 import sdfetch
+import envoy
 
 '''
 Solar data logger.
@@ -26,8 +28,13 @@ next time the database is available.
 '''
 
 # Get configuration
-with open("localconfig.json", "r") as f:
-	config = json.load(f)
+#with open("localconfig.json", "r") as f:
+#	config = json.load(f)
+dotenv.load_dotenv(dotenv_path='localenv.txt')
+
+print (os.getenv("ENPHASE_HOST"))
+
+
 
 
 
@@ -50,7 +57,7 @@ rootLogger.addHandler(rfHandler)
 # Console handler that will report only warnings.
 consoleHandler = logging.StreamHandler(sys.stdout)
 consoleHandler.setFormatter(sharedformatter)
-consoleHandler.setLevel(logging.WARN)
+consoleHandler.setLevel(logging.DEBUG)
 rootLogger.addHandler(consoleHandler)
 
 # Create logger for this module.
@@ -98,14 +105,15 @@ logger.info("----- STARTING -----")
 # Create the solar logger
 #
 sdlogger = sdlogger.SDLogger("local_cache.csv", 
-				config['solardb_name'],
-				config['solardb_table'],
-				config['solardb_user'],
-				config['solardb_pass'], 
-				config['solardb_host'], 
-				config['solardb_port'])
+				os.getenv('SOLARDB_NAME'),
+				os.getenv('SOLARDB_TABLE'),
+				os.getenv('SOLARDB_USER'),
+				os.getenv('SOLARDB_PASS'), 
+				os.getenv('SOLARDB_HOST'),
+				os.getenv('SOLARDB_PORT'))
 
-sdfetch = sdfetch.SDFetch(config.get('enphase_host', 'envoy.local'), config.get('enphase_port', 80))
+ev = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), int(os.getenv('ENPHASE_PORT', 80)))
+sdfetch = sdfetch.SDFetch(ev)
 
 
 #
@@ -124,13 +132,20 @@ t.start()
 #
 try:
 	while True:
-		item = sdfetch.getSDItem()
-		if item is not None:
-			q.put_nowait(item)
-			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.production:.1f} - {item.consumption:.1f} -> {item.production - item.consumption:.1f}")
-		else:
-			print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: no data captured")
-		# TODO:  more precise sleep time so we are closer to every even 10 seconds.
+		try:
+			item = sdfetch.getSDItem()
+			if item is not None:
+				q.put_nowait(item)
+				print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.production:.1f} - {item.consumption:.1f} -> {item.production - item.consumption:.1f}")
+			else:
+				print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: no data captured")
+			# TODO:  more precise sleep time so we are closer to every even 10 seconds.
+		except KeyboardInterrupt:
+			raise
+		except Exception as e:
+			logger.error("Unexpected exception: %s", str(e), exc_info=True)
+			# TODO:  Notify
+
 		time.sleep(10)
 except KeyboardInterrupt:
 	logger.warning ("Keyboard interrupt")
