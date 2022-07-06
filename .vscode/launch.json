@@ -30,6 +30,15 @@
 			"justMyCode": true
 		},
 		{
+			"name": "Python: Current dash-sample",
+			"type": "python",
+			"request": "launch",
+			"program": "${file}",
+			"cwd": "${workspaceRoot}/dash-sample",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
 			"name": "Docker: gathersolar",
 			"type": "docker",
 			"request": "launch",
