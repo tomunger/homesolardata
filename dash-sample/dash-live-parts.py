@@ -22,7 +22,22 @@ server = app.server
 app.layout = html.Div(
     html.Div([
         html.H4('Home solar production'),
-        html.Div(id='live-update-text'),
+        html.Div([
+            html.Span([
+                'Time:  ',
+                html.Code("", style={'fontSize': '18px'}, id="time-text"),
+            ]),
+            html.Br(),
+            html.Span([
+                'Production:  ',
+                html.Code("", style={'fontSize': '18px'}, id="production-text"),
+            ]),
+            html.Br(),
+            html.Span([
+                'Consumption:  ',
+                html.Code("", style={'fontSize': '18px'}, id="consumption-text"),
+            ]),
+        ]),
         # dcc.Graph(id='live-update-graph'),
         dcc.Interval(
             id='interval-component',
@@ -33,30 +48,18 @@ app.layout = html.Div(
 )
 
 
-@app.callback(Output('live-update-text', 'children'),
+@app.callback(Output('time-text', 'children'),
+                Output('production-text', 'children'),
+                Output('consumption-text', 'children'),
               Input('interval-component', 'n_intervals'))
 def update_metrics(n):
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     p = envoy_system.get_power()
     if p is None:
+        return [now + "  (error fetching)", dash.no_update, dash.no_update]
         return [ html.Span(f'{now}: Error fetching power')]
-    style = {'padding': '5px', 'fontSize': '16px'}
-    return [
-		html.Span([
-			'Time:  ',
-			html.Code(now, style={'fontSize': '18px'}),
-		]),
-        html.Br(),
-		html.Span([
-			'Production:  ',
-			html.Code('{0:6.2f}'.format(p[0]), style={'fontSize': '18px'}),
-		]),
-		html.Br(),
-		html.Span([
-			'Consumption:  ',
-			html.Code('{0:6.2f}'.format(p[1]), style={'fontSize': '18px'}),
-		]),
-    ]
+
+    return [now, str(int(p[0])), str(int(p[1])) ]
 
 
 
