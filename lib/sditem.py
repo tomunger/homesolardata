@@ -12,3 +12,5 @@ class SDItem(object):
 	def __str__(self):
 		return f"{self.time},{self.production},{self.consumption}"
 
+	def __str__(self):
+		return f"SDItem<{self.time},{self.production},{self.consumption}>"

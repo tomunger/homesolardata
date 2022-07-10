@@ -1,6 +1,5 @@
 import logging
 from logging.handlers import RotatingFileHandler
-import json
 import time
 import threading
 import sys
@@ -12,7 +11,6 @@ import os
 
 import sdlogger
 import sditem
-import sdfetch
 import envoy
 
 '''
@@ -31,8 +29,6 @@ next time the database is available.
 #with open("localconfig.json", "r") as f:
 #	config = json.load(f)
 dotenv.load_dotenv(dotenv_path='localenv.txt')
-
-print (os.getenv("ENPHASE_HOST"))
 
 
 
@@ -112,8 +108,7 @@ sdlogger = sdlogger.SDLogger("local_cache.csv",
 				os.getenv('SOLARDB_HOST'),
 				os.getenv('SOLARDB_PORT'))
 
-ev = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), int(os.getenv('ENPHASE_PORT', 80)))
-sdfetch = sdfetch.SDFetch(ev)
+envoy_system = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), int(os.getenv('ENPHASE_PORT', 80)))
 
 
 #
@@ -133,7 +128,7 @@ t.start()
 try:
 	while True:
 		try:
-			item = sdfetch.getSDItem()
+			item = envoy_system.get_power()
 			if item is not None:
 				q.put_nowait(item)
 				print (f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {item.production:.1f} - {item.consumption:.1f} -> {item.production - item.consumption:.1f}")

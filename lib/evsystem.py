@@ -1,10 +1,10 @@
 '''
 Abstract EVsystem class
 '''
-from typing import Tuple
+import sditem
 
 class EVSystem(object):
-	def get_power(self) -> Tuple[float, float]:
+	def get_power(self) -> sditem.SDItem:
 		raise NotImplementedError()
 
 

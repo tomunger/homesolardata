@@ -139,7 +139,7 @@ class EnvoySystem(EVSystem):
 
 
 
-	def get_power(self) -> Tuple[float, float]:
+	def get_power(self) -> SDItem:
 		if not self._is_interrogated:
 			self._interrogate()
 		
@@ -156,5 +156,7 @@ class EnvoySystem(EVSystem):
 				net = n['activePower']
 			
 		consumption = production + net
+
+		item = SDItem(datetime.datetime.now(), production, consumption)
 				
-		return (production, consumption)
+		return item
