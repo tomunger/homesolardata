@@ -39,6 +39,24 @@
 			"justMyCode": true
 		},
 		{
+			"name": "Python: test-solarrecent",
+			"type": "python",
+			"request": "launch",
+			"program": "test-solarrecent.py",
+			"cwd": "${workspaceRoot}/dash-sample",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
+			"name": "Python: rundashboard",
+			"type": "python",
+			"request": "launch",
+			"program": "dashboard/rundashboard.py",
+			"cwd": "${workspaceRoot}",
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
 			"name": "Docker: gathersolar",
 			"type": "docker",
 			"request": "launch",
