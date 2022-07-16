@@ -15,9 +15,9 @@
 		}
 	],
 	"terminal.integrated.env.osx": {
-		"PYTHONPATH": "lib"
+		"PYTHONPATH": "${workspaceRoot}/lib:${workspaceRoot}/dashboard"
 	},	
 	"terminal.integrated.env.linux": {
-		"PYTHONPATH": "lib"
+		"PYTHONPATH": "${workspaceRoot}/lib:${workspaceRoot}/dashboard"
 	},
 }
