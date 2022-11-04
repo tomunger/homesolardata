@@ -7,7 +7,7 @@
 			"platform": "python",
 			"dockerBuild": {
 				"tag": "homesolardata:latest",
-				"dockerfile": "${workspaceFolder}/Dockerfile",
+				"dockerfile": "${workspaceFolder}/Dockerfile-dashboard",
 				"context": "${workspaceFolder}",
 				"pull": true
 			}
@@ -19,7 +19,7 @@
 				"docker-build"
 			],
 			"python": {
-				"file": "gathersolardata/runlogger.py"
+				"file": "dashboard/rundashboard.py"
 			}
 		}
 	]

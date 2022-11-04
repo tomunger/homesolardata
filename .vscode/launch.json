@@ -57,14 +57,18 @@
 			"justMyCode": true
 		},
 		{
-			"name": "Docker: gathersolar",
+			"name": "Docker: dashboard",
 			"type": "docker",
 			"request": "launch",
 			"preLaunchTask": "docker-run: debug",
+			"dockerServerReadyAction": {
+				"action": "openExternally",
+				"uriFormat": "http://localhost:8080"
+			},
 			"python": {
 				"pathMappings": [
 					{
-						"localRoot": "${workspaceFolder}/gathersolardata",
+						"localRoot": "${workspaceFolder}",
 						"remoteRoot": "/app"
 					}
 				],
