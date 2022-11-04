@@ -1,0 +1,7 @@
+pandas
+sqlalchemy
+numpy
+matplotlib
+requests
+scipy
+pymysql
