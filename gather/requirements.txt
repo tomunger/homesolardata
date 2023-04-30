@@ -1,4 +1,5 @@
-iso8601==1.0.2
-PyMySQL==1.0.2
-requests==2.27.1
+iso8601
+PyMySQL
+httpx
+pyyaml
 python-dotenv

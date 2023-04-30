@@ -50,7 +50,14 @@ class SDLogger(object):
 	run() method reads from queue and processes.  
 	Sending None to queue will cause run() to exit.
 	'''
-	def __init__(self, local_cache_file: str, db_name: str, db_table: str, db_user: str, db_pass: str, db_host: str, db_port: int):
+	def __init__(self, 
+				local_cache_file: str, 
+				db_name: str, 
+				db_table: str, 
+				db_user: str, 
+				db_pass: str, 
+				db_host: str, 
+				db_port: int):
 		self.local_cache_file = pathlib.Path(local_cache_file)
 		self.db_name = db_name
 		self.db_table = db_table

@@ -45,3 +45,21 @@ See notes on [python development](https://code.visualstudio.com/docs/python/envi
 
  * `.env` is read by VS Code to configure PYTHONPATH for Code.
  * `.vscode/settings.json` sets `terminal.integrated.env.osx` to define PYTHONPATH.  
+
+
+## envoy security
+
+March 2023 Envoy updated device software.  The devices now require an access token.  When
+you visit your device web site you get a page asking for the access token.  You can get one from
+enphase at:
+
+https://entrez.enphaseenergy.com/
+
+Documentation on how to get and use the token is provided in a [technical brief](https://store-d9.enphase.com/download/iq-gateway-access-using-token-tech-brief)
+
+You probably have a "commissioned" gateway.  
+
+At `Select System` enter your system name.  This appears in the phone app under "Site details".  Entering part of the system name
+may cause the remainder to display.  Then select the gateway.  Mine appeared by be identified by the date of service.
+
+An API key is returned.  

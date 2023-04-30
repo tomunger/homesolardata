@@ -1,0 +1,47 @@
+version: 1
+
+# Allow loggers not referenced in this file to write records
+disable_existing_loggers: false
+
+formatters:
+  consoleFmt:
+    # Simple format for the conole.
+    format: '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
+
+  fileFmt:
+    # Simple format for the conole.
+    format: '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
+
+
+handlers:
+  # 'filename' fields have LOGGING_DIRECTORY and SYSTEM_NAME substitute by
+  # the application.
+  consoleHnd:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: consoleFmt
+    stream: ext://sys.stdout
+
+  fileHnd:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: consoleFmt
+    mode: 'a'
+    filename: "local-runlogger-log.txt"
+    maxBytes: 5000000
+    backupCount: 5
+
+
+
+
+loggers:
+
+  root:
+    level: DEBUG
+    handlers: [consoleHnd, fileHnd]
+  # Set custom level for additional loggers.
+
+  httpx:
+    level: WARNING
+  httpcore:
+    level: WARNING

@@ -9,9 +9,13 @@
 			"name": "runlogger.py",
 			"type": "python",
 			"request": "launch",
-			"program": "gathersolardata/runlogger.py",
+			"program": "gather/runlogger.py",
 			"console": "integratedTerminal",
-			"justMyCode": false
+			"justMyCode": false, 
+			"args": [
+				"-L", "log-config.yaml",
+				"-E", "localenv.txt"
+			]
 		},
 		{
 			"name": "Python: Current File & library",
@@ -36,7 +40,7 @@
 			"program": "${file}",
 			"cwd": "${workspaceRoot}/dash-sample",
 			"console": "integratedTerminal",
-			"justMyCode": true
+			"justMyCode": true,
 		},
 		{
 			"name": "Python: test-solarrecent",
