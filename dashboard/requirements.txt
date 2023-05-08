@@ -4,5 +4,5 @@ python-dotenv
 sqlalchemy
 pymysql
 gunicorn
-requests
+httpx
 codetiming

@@ -57,6 +57,8 @@ https://entrez.enphaseenergy.com/
 
 Documentation on how to get and use the token is provided in a [technical brief](https://store-d9.enphase.com/download/iq-gateway-access-using-token-tech-brief)
 
+There is also a [quick start guide](https://developer.enphase.com/docs/quickstart.html).  But I think this refers to the web API, not the local gateway API.
+
 You probably have a "commissioned" gateway.  
 
 At `Select System` enter your system name.  This appears in the phone app under "Site details".  Entering part of the system name

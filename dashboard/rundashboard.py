@@ -18,7 +18,7 @@ import graphsolar
 #
 # Load development environment setting.
 #
-dotenv.load_dotenv(dotenv_path='localenv-prod.txt')
+dotenv.load_dotenv(dotenv_path='localenv.txt')
 
 
 
@@ -26,7 +26,7 @@ dotenv.load_dotenv(dotenv_path='localenv-prod.txt')
 # Configure logging to a rotating file and to console
 #
 rootLogger = logging.getLogger('')
-# Don't call:  rootLogger.setLevel(logging.DEBUG) --- this will allow logging from other imported modules to come through.
+# Don't call:  rootLogger.setLevel(logging.DEBUG) --- this will allow logging from other im54ged modules to come through.
 
 # A formatter can be shared across handlers.
 sharedformatter = logging.Formatter('%(asctime)s:%(threadName)s:%(name)s:%(levelname)s:  %(message)s')
@@ -51,7 +51,9 @@ logger.setLevel(logging.INFO)
 #
 # Object to read from the envoy system.
 #
-envoy_system = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), int(os.getenv('ENPHASE_PORT', 80)))
+envoy_system = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), 
+				 	int(os.getenv('ENPHASE_PORT', 80)),
+                    api_key = os.getenv('ENPHASE_API_KEY'))
 
 
 #

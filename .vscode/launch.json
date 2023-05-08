@@ -61,7 +61,7 @@
 			"justMyCode": true
 		},
 		{
-			"name": "Docker: dashboard",
+			"name": "Docker: dashboard(docker)",
 			"type": "docker",
 			"request": "launch",
 			"preLaunchTask": "docker-run: debug",

@@ -22,7 +22,7 @@ Run with the following commands:
 
 Local build
 
-    docker build -t hsdashboard -f Dockerfile-dashboard .    
+    docker build -t hsdashboard -f Dockerfile-dashboard:0.3.1 .    
 
 Local run   
 
@@ -30,15 +30,15 @@ Local run
 
 Cross platform build
     
-    docker buildx build -f Dockerfile-dashboard --platform linux/amd64,linux/arm64 -t tomunger/hsdashboard --push . 
+    docker buildx build -f Dockerfile-dashboard --platform linux/amd64,linux/arm64 -t tomunger/hsdashboard:0.3.1 --push . 
 
 Pull an image
 
-    docker pull tomunger/hsdashboard
+    docker pull tomunger/hsdashboard:0.3.1
 
 Run as service
 
-    docker run -d -p 8050:8050  --env-file localenv-prod.txt --name hsdashboard tomunger/hsdashboard:tag
+    docker run -d -p 8050:8050  --env-file localenv-prod.txt --name hsdashboard tomunger/hsdashboard:0.3.1
 
  * `-d` runs in the background
  * `-p` map port 8050 to port 8050

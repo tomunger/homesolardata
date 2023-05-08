@@ -21,17 +21,17 @@ and log to a SQL database.
 # Command line
 To build:
 
-	docker build -t hsgather .
+	docker build -t homesolargather .
 
 `-t` tags the build
 
-To build multi-platoform:
+To build multi-paltform (from Mac):
 
-	docker buildx build -f Dockerfile-gather --platform linux/amd64,linux/arm64,linux/arm/v7 -t tomunger/hsgather:0.2.0 --push .
+	docker buildx build -f Dockerfile-gather --platform linux/amd64,linux/arm64,linux/arm/v7 -t tomunger/homesolargather:0.3.0 --push .
 
 To run:
 
-	docker run -d --env-file localenv-prod.txt --name hsgather tomunger/hsgather:0.2.0 
+	docker run -d --env-file localenv-prod.txt --name hsgather tomunger/homesolargather:0.3.0
 
 	
 
