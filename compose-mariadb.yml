@@ -1,0 +1,42 @@
+# Docker compose file for Mariadb and Adminer containers
+
+# https://hub.docker.com/_/mariadb
+# https://hub.docker.com/_/adminer
+#
+# Usage:
+#   1. docker-compose -p homesolardb -f compose-mariadb.yml --env-file local-compose-mariadb-env.txt up -d
+#   2. docker-compose -f compose-mariadb.yml down
+#
+
+version: "3.7"
+
+services:
+
+  db:
+    image: mariadb:11.1-jammy
+    container_name: solar_mariadb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    ports:
+      - 3306:3306
+    volumes:
+      - solar_maria_data:/var/lib/mysql
+      - solar_maria_conf:/etc/mysql/conf.d
+
+
+  adminer:
+    image: adminer:4.8.1-standalone
+    container_name: solar_adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+
+volumes:
+  solar_maria_data:
+  solar_maria_conf:
+
