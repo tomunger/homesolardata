@@ -1,4 +1,4 @@
-production CREATE TABLE `production` (
+CREATE TABLE `production` (
 	`production_key` bigint(20) NOT NULL AUTO_INCREMENT,
 	`datetime` datetime(2) NOT NULL,
 	`consumption` float NOT NULL,

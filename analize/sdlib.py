@@ -40,6 +40,6 @@ def save_database(config: DB_CONFIG, data: pd.DataFrame) -> None:
     connectionstr = f"mysql+pymysql://{config['solardb_user']}:{config['solardb_pass']}@{config['solardb_host']}/{config['solardb_name']}?charset=utf8mb4"
     engine = sqlalchemy.create_engine(connectionstr)
     engine.connect()
-    data.to_sql(config['solardb_table'], engine, index=True, if_exists='replace')
+    data.to_sql(config['solardb_table'], engine, index=True, if_exists='append')
 
 
