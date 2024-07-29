@@ -18,7 +18,7 @@ import graphsolar
 #
 # Load development environment setting.
 #
-dotenv.load_dotenv(dotenv_path='localenv.txt')
+dotenv.load_dotenv(dotenv_path='localenv-prod.txt')
 
 
 
@@ -52,9 +52,11 @@ logger.setLevel(logging.INFO)
 # Object to read from the envoy system.
 #
 envoy_system = envoy.EnvoySystem(os.getenv('ENPHASE_HOST', 'envoy.local'), 
-				 	int(os.getenv('ENPHASE_PORT', 80)),
-                    api_key = os.getenv('ENPHASE_API_KEY'))
-
+				 	int(os.getenv('ENPHASE_PORT', 443)),
+                    username = os.getenv('ENPHASE_USERNAME'),
+                    password = os.getenv('ENPHASE_PASSWORD'),
+                    envoy_serial = os.getenv('ENPHASE_GWSERIAL')
+                )
 
 #
 # Create the Dash application.

@@ -6,10 +6,16 @@ and log to a SQL database.
 
 # Environment Variables
 
+The dashboard needs your username, password, and gateway serial number to get an API token from enphase.  That token
+is required to access the gateway.
+
 	ENPHASE_HOST=envoy.local
 	ENPHASE_HOST=192.168.11.11
 	ENPHASE_PORT=443
-	ENPHASE_API_KEY=xxx
+	ENPHASE_USERNAME=x
+	ENPHASE_PASSWORD=x
+	ENPHASE_GWSERIAL=n
+
 	SOLARDB_USER=
 	SOLARDB_PASS=
 	SOLARDB_NAME=
@@ -29,11 +35,11 @@ To build:
 
 To build multi-paltform (from Mac):
 
-	docker buildx build -f Dockerfile-gather --platform linux/amd64,linux/arm64,linux/arm/v7 -t tomunger/homesolargather:0.3.2 --push .
+	docker buildx build -f Dockerfile-gather --platform linux/amd64,linux/arm64,linux/arm/v7 -t tomunger/homesolargather:0.4.0 --push .
 
 To run:
 
-	docker run -d --env-file localenv-prod.txt --name hsgather tomunger/homesolargather:0.3.0
+	docker run -d --env-file localenv-prod.txt --name hsgather tomunger/homesolargather:0.4.0
 
 
 `-it` adds a pseudo terminal so you can see what it is doing.

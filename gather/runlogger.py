@@ -86,7 +86,9 @@ def run_loger(interval: int = 60) -> None:
     envoy_system = envoy.EnvoySystem(
                     host = os.getenv('ENPHASE_HOST', 'envoy.local'), 
                     port = int(os.getenv('ENPHASE_PORT', 80)),
-                    api_key = os.getenv('ENPHASE_API_KEY')
+                    username = os.getenv('ENPHASE_USERNAME'),
+                    password = os.getenv('ENPHASE_PASSWORD'),
+                    envoy_serial = os.getenv('ENPHASE_GWSERIAL')
                 )
 
 

@@ -1,13 +1,12 @@
-import io
 import subprocess
-
 from ipaddress import ip_address
 import socket
 import datetime
-# requests import requests
+import json
+import logging
+
 import httpx
 #import pycurl  # see https://stackoverflow.com/questions/25491090/how-to-use-python-to-execute-a-curl-command
-import logging
 from evsystem import EVSystem, EVSystemException
 from sditem import SDItem
 
@@ -37,14 +36,20 @@ class EnvoyMeter(object):
 class EnvoySystem(EVSystem):
 	_url_meters:str = "https://{host}:{port}/ivp/meters"
 	_url_meters_readings:str = _url_meters + "/readings"
+	_url_login: str = 'https://enlighten.enphaseenergy.com/login/login.json?'
+	_url_token: str = 'https://entrez.enphaseenergy.com/tokens'
 
 	def __init__(self, 
 				host:str="envoy.local", 
 				port:int=80, 
-				api_key:str = ""):
+				username: str = "",
+				password: str = "",
+				envoy_serial: str = ""):
 		self._host = host
 		self._port = port
-		self._api_key = api_key
+		self._ev_username = username
+		self._ev_password = password
+		self._ev_serial = envoy_serial
 		self._p_address = None
 		self._next_ip_fetch = datetime.datetime.now()
 		self._ipaddr_refresh_interval = datetime.timedelta(minutes=2)
@@ -53,7 +58,9 @@ class EnvoySystem(EVSystem):
 		self._meters: dict[int, EnvoyMeter] = {}
 		self._eid_production: int = 0
 		self._eid_net_consumption: int = 0
-		# requests self._session = requests.Session()
+		self._api_token: str = ""
+		self._token_last_fetch: datetime.datetime | None = None
+		self._token_last_try: datetime.datetime | None = None
 
 		self._make_call = self._make_call_httpx
 
@@ -74,53 +81,45 @@ class EnvoySystem(EVSystem):
 				self._next_ip_fetch = datetime.datetime.now() + self._ipaddr_refresh_interval
 
 
+	def _update_token(self):
+		data = {'user[email]': self._ev_username, 'user[password]': self._ev_password}
+		response = httpx.post(EnvoySystem._url_login, data=data) 
+		response.raise_for_status()
+		response_data = json.loads(response.text)
+		data = {'session_id': response_data['session_id'], 'serial_num': self._ev_serial, 'username': self._ev_username}
+		response = httpx.post(EnvoySystem._url_token, json=data)
+		response.raise_for_status()
+		self._api_token = response.text
+		self._token_last_update = datetime.datetime.now()
+		logger.info("Updated token")
 
-	# def _makecall_requests(self, url_base:str) -> dict[str,str] | list[dict[str,str]]:
-	# 	self._get_ip_address()
-	# 	rjson = {}
-	# 	for h in self._host_list:
-	# 		url = url_base.format(host=h, port=self._port)
-	# 		logger.debug("Trying to fetch from %s", url)
+	def _check_token(self):
+		if not self._api_token:
+			try:
+				self._token_last_try = datetime.datetime.now()
+				self._update_token()
+			except httpx.HTTPError as e:
+				logger.exception ("Error updating API token %s", e.message)
+		
 
-	# 		headers: dict[str, str] = {}
-	# 		if self._api_key:
-	# 			headers["Authorization"] = f"Bearer {self._api_key}"
-	# 		try: 
-	# 			# download json from URL
-	# 			r = self._session.get(url, headers=headers, timeout=10)
+	def _clear_token(self):
+		logger.info("Cleared token")
+		self._api_token = ""
 
-	# 			# parse json
-	# 			rjson = r.json()
-	# 			break
 
-	# 		except requests.exceptions.Timeout:
-	# 			# This probably represents network issues that won't succeed with second try
-	# 			logger.error ("Timeout reading Enphase data from %s", url)
-	# 			break
-
-	# 		except requests.exceptions.ConnectionError as e:
-	# 			# This, sometimes, represent problems looking up the hostname, and my succeed if done with an IP address.
-	# 			logger.exception ("Connection error reading Enphase data from %s", url)
-	# 			continue
-
-	# 		except Exception as e:
-	# 			# This is an unknown error.
-	# 			logger.error ("Exception reading data from %s: %s\n", url, str(e), exc_info=True)
-	# 			break
-
-	# 	return rjson
 
 
 	def _make_call_httpx(self, url_base:str) ->  dict[str,str] | list[dict[str,str]]:
 		self._get_ip_address()
+		self._check_token()
 		rjson = {}
 		for h in self._host_list:
 			url = url_base.format(host=h, port=self._port)
 			logger.debug("Trying to fetch from %s", url)
 
 			headers: dict[str, str] = {}
-			if self._api_key:
-				headers["Authorization"] = f"Bearer {self._api_key}"
+			if self._api_token:
+				headers["Authorization"] = f"Bearer {self._api_token}"
 
 
 			try: 
@@ -143,6 +142,8 @@ class EnvoySystem(EVSystem):
 
 			except httpx.HTTPStatusError as e:
 				logger.exception("HTTP Error %s reading Enphase data from %s", e.response.status_code, url)
+				if e.response.status_code == '401':
+					self._clear_token()
 
 			except Exception as e:
 				# This is an unknown error.

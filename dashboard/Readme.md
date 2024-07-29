@@ -10,6 +10,22 @@ Uses plotly [dash](https://dash.plotly.com/introduction)
 
 Github Peterpickle [home-energy](https://github.com/peterpickle/home-energy)
 
+# Environment variables
+
+
+    ENPHASE_HOST=192.168.11.11
+    ENPHASE_PORT=443
+    ENPHASE_USERNAME=x
+    ENPHASE_PASSWORD=x
+    ENPHASE_GWSERIAL=n
+
+    SOLARDB_USER=solarlogger
+    SOLARDB_PASS=x
+    SOLARDB_NAME=enphasesolar
+    SOLARDB_TABLE=production
+    SOLARDB_HOST=192.168.11.10
+    SOLARDB_PORT=3306
+    TZ=America/Los_Angeles
 
 # Dash
 
@@ -22,7 +38,7 @@ Run with the following commands:
 
 Local build
 
-    docker build -t hsdashboard -f Dockerfile-dashboard:0.3.1 .    
+    docker build -t hsdashboard -f Dockerfile-dashboard:0.4.0 .    
 
 Local run   
 
@@ -30,15 +46,15 @@ Local run
 
 Cross platform build
     
-    docker buildx build -f Dockerfile-dashboard --platform linux/amd64,linux/arm64 -t tomunger/hsdashboard:0.3.1 --push . 
+    docker buildx build -f Dockerfile-dashboard --platform linux/amd64,linux/arm64 -t tomunger/hsdashboard:0.4.0 --push . 
 
 Pull an image
 
-    docker pull tomunger/hsdashboard:0.3.1
+    docker pull tomunger/hsdashboard:0.4.0
 
 Run as service
 
-    docker run -d -p 8050:8050  --env-file localenv-prod.txt --name hsdashboard tomunger/hsdashboard:0.3.1
+    docker run -d -p 8050:8050  --env-file localenv-prod.txt --name hsdashboard tomunger/hsdashboard:0.4.0
 
  * `-d` runs in the background
  * `-p` map port 8050 to port 8050
