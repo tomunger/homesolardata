@@ -1,5 +1,8 @@
 # Gather Solar Data
 
+## 0.4.0 - 7/27/2024
+
+Automatic token retrieval from enphase.
 
 ## 0.3.0 - 6/23/2022
 
