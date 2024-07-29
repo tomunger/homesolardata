@@ -143,17 +143,17 @@ class GraphMomentary(Grapher):
 
 def create_grapher(graph_range: str) -> Grapher:
     if graph_range == '7d':
-        return GraphMomentary(None, 7 * 24 * 60,  60*60, '1T', 20)
+        return GraphMomentary(None, 7 * 24 * 60,  60*60, '1min', 20)
     if graph_range == '3d':
-        return GraphMomentary(None, 3 * 24 * 60,  60*60, '1T', 10)
+        return GraphMomentary(None, 3 * 24 * 60,  60*60, '1min', 10)
     if graph_range == '1d':
-        return GraphMomentary(None, 24 * 60,      30*60, '1T', 5)
+        return GraphMomentary(None, 24 * 60,      30*60, '1min', 5)
     elif graph_range == '12h':
-        return GraphMomentary(None, 12 * 60,      10*60, '1T', 3)
+        return GraphMomentary(None, 12 * 60,      10*60, '1min', 3)
     elif graph_range == '6h':
-        return GraphMomentary(None, 6 * 60,       5*60,  '1T', 0)
+        return GraphMomentary(None, 6 * 60,       5*60,  '1min', 0)
     elif graph_range == '3h':
-        return GraphMomentary(None, 3 * 60,       5*60,  '1T', 0)
+        return GraphMomentary(None, 3 * 60,       5*60,  '1min', 0)
     elif graph_range == '1h':
         return GraphMomentary(None, 60,           1*60,  '30S', 0)
     else:    # '30m'
